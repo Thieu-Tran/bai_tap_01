@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bai13 {
@@ -24,8 +25,36 @@ public class Bai13 {
         System.out.println("Giá trị nhỏ nhất trong mảng: " + tinhMaxMin(numArr, false));
 
         //Giá trị âm lớn nhất, nhỏ nhất trong mảng
-        timPhanTuAm(numArr,true);
-        timPhanTuAm(numArr,false);
+        timPhanTuAm(numArr, true);
+        timPhanTuAm(numArr, false);
+
+        //Giá trị dương lớn nhất, nhỏ nhất trong mảng
+        timPhanTuDuong(numArr, true);
+        timPhanTuDuong(numArr, false);
+
+        //In phần tử chẵn lẻ
+        inChanLe(numArr);
+
+        //Thêm phần tử cho mảng
+        System.out.print("Nhập vào index cần thêm vào mảng: ");
+        int indexAddNum = sc.nextInt();
+        System.out.print("Nhập vào giá trị cần thêm tại vị trí index: ");
+        double addNum = sc.nextDouble();
+
+        double[] newArr1 = themPhanTu(numArr, indexAddNum, addNum);
+        for (int i = 0; i < newArr1.length; i++) {
+            System.out.print(newArr1[i] + " ");
+        }
+
+        //Xóa phần tử
+        System.out.println();
+        System.out.print("Nhập vào index cần xóa khỏi mảng: ");
+        int indexDelNum = sc.nextInt();
+        double[] newArr2 = xoaPhanTu(numArr, indexDelNum);
+        for (int i = 0; i < newArr2.length; i++) {
+            System.out.print(newArr2[i] + " ");
+        }
+
 
     }
 
@@ -60,23 +89,96 @@ public class Bai13 {
         return value;
     }
 
+    //Tìm giá trị âm lớn nhất nhỏ nhất
     public static void timPhanTuAm(double[] arr, boolean isValue) {
-        double value = arr[0];
         double minValue = tinhMaxMin(arr, false);
+        double value = minValue;
 
         if (minValue >= 0) {
-            System.out.println("Không chứa phần tử âm............");
+            System.out.println("Mảng không chứa phần tử âm............");
         } else {
             if (isValue) {
                 for (int i = 0; i < arr.length; i++) {
-                    if (arr[i] > minValue && arr[i] < 0) {
+                    if (arr[i] > value && arr[i] < 0) {
                         value = arr[i];
                     }
                 }
-                System.out.println("Giá trị âm lớn nhất là: " +value);
+                System.out.println("Giá trị âm lớn nhất là: " + value);
             } else {
-                System.out.println("Giá trị âm nhỏ nhất là: " +minValue);
+                System.out.println("Giá trị âm nhỏ nhất là: " + minValue);
             }
         }
     }
+
+    //Tìm giá trị dương lớn nhất nhỏ nhất
+    public static void timPhanTuDuong(double[] arr, boolean isValue) {
+        double maxValue = tinhMaxMin(arr, true);
+        double value = maxValue;
+
+        if (maxValue <= 0) {
+            System.out.println("Mảng không chứa phần tử dương............");
+        } else {
+            if (isValue) {
+                System.out.println("Giá trị dương lớn nhất là: " + maxValue);
+            } else {
+                for (int i = 0; i < arr.length; i++) {
+                    if (arr[i] > 0 && arr[i] < value) {
+                        value = arr[i];
+                    }
+                }
+                System.out.println("Giá trị dương nhỏ nhất là: " + value);
+            }
+        }
+    }
+
+    public static void inChanLe(double[] arr) {
+        ArrayList<Double> arrChan = new ArrayList<>();
+        ArrayList<Double> arrLe = new ArrayList<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 == 0) {
+                arrChan.add(arr[i]);
+            } else {
+                arrLe.add(arr[i]);
+            }
+        }
+        System.out.println("Danh sách số chẵn trong mảng: " + arrChan);
+        System.out.println("Danh sách số lẻ trong mảng: " + arrLe);
+    }
+
+    //Hàm thêm phần tử theo index
+    public static double[] themPhanTu(double[] arr, int index, double num) {
+        int n = arr.length + 1;
+        double[] newArr = new double[n];
+
+        if (index < 0 || index > n) {
+            return arr;
+        }
+        for (int i = 0; i < index; i++) {
+            newArr[i] = arr[i];
+        }
+        for (int i = n - 1; i > index; i--) {
+            newArr[i] = arr[i - 1];
+        }
+        newArr[index] = num;
+        return newArr;
+    }
+
+
+    //Hàm xóa phần tử theo index
+    public static double[] xoaPhanTu(double[] arr, int index) {
+        double[] newArr = new double[arr.length - 1];
+
+        if (index < 0 || index >= arr.length) {
+            return arr;
+        }
+        for (int i = 0; i < index; i++) {
+            newArr[i] = arr[i];
+        }
+        for (int i = index + 1; i < arr.length; i++) {
+            newArr[i-1] = arr[i];
+        }
+        return newArr;
+    }
+
 }
